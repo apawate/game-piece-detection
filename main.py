@@ -13,15 +13,15 @@ while(capture):
 	lower_yellow = np.array([20, 100, 100])
 	upper_yellow = np.array([30, 255, 255])
 
-
-
     # Creates a mask showing all "blue" objects and one showing all "yellow" objects in the frame
 	mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
 	mask_yellow = cv2.inRange(hsv, lower_yellow, upper_yellow)
 	res_blue = cv2.bitwise_and(frame,frame, mask= mask_blue)
 	res_yellow = cv2.bitwise_and(frame, frame, mask= mask_yellow)
-        has_blue = (np.sum(mask_blue) > 0)
-        has_yellow = (np.sum(mask_yellow) > 0)
+        pix_blue = mask_blue.shape[0] * mask_blue.shape[1]
+        pix_yellow = mask_yellow.shape[0] * mask_yellow.shape[1]
+        has_blue = (np.sum(mask_blue) > (0.05*pix_blue))
+        has_yellow = (np.sum(mask_yellow) > (0.05*pix_yellow))
 	cv2.imshow('frame',frame)
         if not has_yellow:
             cv2.imshow('mask', mask_blue)
