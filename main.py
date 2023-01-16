@@ -23,7 +23,7 @@ while(capture):
         has_blue = (np.sum(mask_blue) > 0)
         has_yellow = (np.sum(mask_yellow) > 0)
 	cv2.imshow('frame',frame)
-        if (has_blue):
+        if not has_yellow:
             cv2.imshow('mask', mask_blue)
             cv2.imshow('res', res_blue)
         else:
