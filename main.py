@@ -20,9 +20,15 @@ while(capture):
 	mask_yellow = cv2.inRange(hsv, lower_yellow, upper_yellow)
 	res_blue = cv2.bitwise_and(frame,frame, mask= mask_blue)
 	res_yellow = cv2.bitwise_and(frame, frame, mask= mask_yellow)
+        has_blue = (np.sum(mask_blue) > 0)
+        has_yellow = (np.sum(mask_yellow) > 0)
 	cv2.imshow('frame',frame)
-	cv2.imshow('mask',mask_yellow)
-	cv2.imshow('res',res_yellow)
+        if (has_blue):
+            cv2.imshow('mask', mask_blue)
+            cv2.imshow('res', res_blue)
+        else:
+            cv2.imshow('mask',mask_yellow)
+	    cv2.imshow('res',res_yellow)
 	k = cv2.waitKey(5) & 0xFF
 	if k == 27:
 		break
