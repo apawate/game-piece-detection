@@ -38,7 +38,7 @@ while(capture):
         blue_index=-1
         index = -1;
         for c_blue in contours_blue: 
-            index++
+            index = index + 1
             if cv2.contourArea(c_blue) < 100:
                 continue
             (x, y), (w, h), r = cv2.minAreaRect(c_blue)
