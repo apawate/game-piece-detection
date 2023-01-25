@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from imutils import contours
 
 cap = cv2.VideoCapture(0)
 capture = True;
@@ -25,9 +26,40 @@ while(capture):
     cv2.imshow('frame',frame)
     if not has_yellow:
         cv2.imshow('mask', mask_blue)
+        blur_blue = cv2.GaussianBlur(mask_blue, (5,5), 0)
+        blur_blue = cv2.Canny(blur_blue, 50, 100)
+        blur_blue = cv2.dilate(blur_blue, None, iterations=1)
+        blur_blue = cv2.erode(blur_blue, None, iterations=1)
+        contours_blue = cv2.findContours(blur_blue.copy(), cv2.RETR_EXTERNAL,
+	cv2.CHAIN_APPROX_SIMPLE)
+        contours_blue = imutils.grab_contours(contours_blue)
+        (contours_blue, _) = contours.sort_contours(contours_blue)
+        blue_max=0
+        blue_index=-1
+        index = -1;
+        for c_blue in contours_blue: 
+            index++
+            if cv2.contourArea(c_blue) < 100:
+                continue
+            (x, y), (w, h), r = cv2.minAreaRect(c_blue)
+            if ((w/h > 2) or (h/w > 2)):
+                continue
+            if ((w > h) and (w > blue_max)):
+                blue_max = w
+                blue_index = index
+            else:
+                if (h > blue_max):
+                    blue_max = h
+                    blue_index = index
+        max_contour = contours_blue[blue_index]
+        print(max_contour)
+            
         #cv2.imshow('res', res_blue)
     else:
         cv2.imshow('mask',mask_yellow)
+        blur_yellow = cv2.GaussianBlur(mask_yellow, (5,5), 0)
+        contours_yellow, hierarchy_yellow = cv2.findContours(thresh_yellow, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        
         #cv2.imshow('res',res_yellow)
     print("% blue", (np.sum(mask_blue)/pix_blue)*100)
     print("% yellow", (np.sum(mask_yellow)/pix_yellow)*100)
