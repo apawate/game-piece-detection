@@ -33,7 +33,7 @@ while(capture):
         contours_blue = cv2.findContours(blur_blue.copy(), cv2.RETR_EXTERNAL,
 	cv2.CHAIN_APPROX_SIMPLE)
         contours_blue = imutils.grab_contours(contours_blue)
-        (contours_blue, _) = contours.sort_contours(contours_blue)
+        (contours_blue, _) = imutils.contours.sort_contours(contours_blue)
         blue_max=0
         blue_index=-1
         index = -1;
