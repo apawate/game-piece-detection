@@ -4,6 +4,8 @@ import imutils
 
 cap = cv2.VideoCapture(0)
 capture = True;
+focal = input("Camera focal length: ")
+focal = int(focal)
 
 while(capture):
     _, frame = cap.read()
@@ -40,7 +42,7 @@ while(capture):
             index = index + 1
             if cv2.contourArea(c_blue) < 100:
                 continue
-            (x, y), (w, h), r = cv2.minAreaRect(c_blue)
+            x,y,w,h = cv2.boundingRect(c_blue)
             if ((w/h > 2) or (h/w > 2)):
                 continue
             if ((w > h) and (w > blue_max)):
@@ -51,7 +53,7 @@ while(capture):
                     blue_max = h
                     blue_index = index
         max_contour = contours_blue[blue_index]
-        print(max_contour)
+        print(max_contour, "Width", blue_max, "Height", blue_max)
             
         #cv2.imshow('res', res_blue)
     else:
