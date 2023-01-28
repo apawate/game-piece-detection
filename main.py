@@ -27,7 +27,6 @@ while(capture):
     has_yellow = (np.sum(mask_yellow) > (0.1*pix_yellow))
     cv2.imshow('frame',frame)
     if not has_yellow:
-        cv2.imshow('mask', mask_blue)
         blur_blue = cv2.GaussianBlur(mask_blue, (5,5), 0)
         blur_blue = cv2.Canny(blur_blue, 50, 100)
         blur_blue = cv2.dilate(blur_blue, None, iterations=1)
@@ -54,7 +53,9 @@ while(capture):
                     blue_index = index
         max_contour = contours_blue[blue_index]
         print("Width", blue_max, "Height", blue_max)
-            
+        x,y,w,h = cv2.boundingRect(max_contour)
+        cv2.rectangle(im,(x,y),(x+w,y+h),(0,255,0),2)
+        cv2.imshow('mask', mask_blue)    
         #cv2.imshow('res', res_blue)
     else:
         cv2.imshow('mask',mask_yellow)
