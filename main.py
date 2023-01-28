@@ -1,11 +1,18 @@
 import cv2
 import numpy as np
 import imutils
+import calculations
 
 cap = cv2.VideoCapture(0)
 capture = True;
 focal = input("Camera focal length: ")
-focal = int(focal)
+focal = float(focal)
+objh = input("Object height: ")
+objh = float(objh)
+objw = input("Object width: ")
+objw = float(objw)
+_, frame = cap.read()
+cv2.imwrite('a.jpg', frame)
 
 while(capture):
     _, frame = cap.read()
@@ -32,12 +39,12 @@ while(capture):
         blur_blue = cv2.dilate(blur_blue, None, iterations=1)
         blur_blue = cv2.erode(blur_blue, None, iterations=1)
         contours_blue = cv2.findContours(blur_blue.copy(), cv2.RETR_EXTERNAL,
-	cv2.CHAIN_APPROX_SIMPLE)
+cv2.CHAIN_APPROX_SIMPLE)
         contours_blue = imutils.grab_contours(contours_blue)
         blue_max=0
         blue_index=-1
         index = -1;
-        for c_blue in contours_blue: 
+        for c_blue in contours_blue:
             index = index + 1
             if cv2.contourArea(c_blue) < 100:
                 continue
@@ -52,16 +59,17 @@ while(capture):
                     blue_max = h
                     blue_index = index
         max_contour = contours_blue[blue_index]
-        print("Width", blue_max, "Height", blue_max)
         x,y,w,h = cv2.boundingRect(max_contour)
-        cv2.rectangle(im,(x,y),(x+w,y+h),(0,255,0),2)
+        print("Width", w, "Height", h)
+        print("Distance", calculations.find_distance(objh, objw, h, w, focal))
+        cv2.rectangle(mask_blue, (x,y),(x+w,y+h),(255,255,255),2)
         cv2.imshow('mask', mask_blue)    
         #cv2.imshow('res', res_blue)
     else:
         cv2.imshow('mask',mask_yellow)
         blur_yellow = cv2.GaussianBlur(mask_yellow, (5,5), 0)
         contours_yellow, hierarchy_yellow = cv2.findContours(thresh_yellow, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        
+       
         #cv2.imshow('res',res_yellow)
     print("% blue", (np.sum(mask_blue)/pix_blue)*100)
     print("% yellow", (np.sum(mask_yellow)/pix_yellow)*100)
