@@ -53,7 +53,7 @@ while(capture):
                     blue_max = h
                     blue_index = index
         max_contour = contours_blue[blue_index]
-        print(max_contour, "Width", blue_max, "Height", blue_max)
+        print("Width", blue_max, "Height", blue_max)
             
         #cv2.imshow('res', res_blue)
     else:
