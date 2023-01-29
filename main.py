@@ -18,6 +18,8 @@ objw_yellow = float(objw_yellow)
 
 while(capture):
     _, frame = cap.read()
+    while (frame is None):
+        _, frame = cap.read()
     # Converts images from BGR to HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
     lower_blue = np.array([110,50,50])
