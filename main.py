@@ -15,8 +15,6 @@ objh_yellow = input("Yellow object height: ")
 objh_yellow = float(objh_yellow)
 objw_yellow = input("Yellow object width: ")
 objw_yellow = float(objw_yellow)
-_, frame = cap.read()
-cv2.imwrite('a.jpg', frame)
 
 while(capture):
     _, frame = cap.read()
@@ -71,9 +69,9 @@ cv2.CHAIN_APPROX_SIMPLE)
         #cv2.imshow('res', res_blue)
     else:
         blur_yellow = cv2.GaussianBlur(mask_yellow, (5,5), 0)
-        blur_yellow = cv2.Canny(blur_blue, 50, 100)
-        blur_yellow = cv2.dilate(blur_blue, None, iterations=1)
-        blur_yellow = cv2.erode(blur_blue, None, iterations=1)
+        blur_yellow = cv2.Canny(blur_yellow, 50, 100)
+        blur_yellow = cv2.dilate(blur_yellow, None, iterations=1)
+        blur_yellow = cv2.erode(blur_yellow, None, iterations=1)
         contours_yellow = cv2.findContours(blur_yellow.copy(), cv2.RETR_EXTERNAL,
 cv2.CHAIN_APPROX_SIMPLE)
         contours_yellow = imutils.grab_contours(contours_yellow)
