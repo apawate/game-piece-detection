@@ -68,10 +68,12 @@ cv2.CHAIN_APPROX_SIMPLE)
             if (h > max):
                 max = h
                 final_index = index
-    if (final_index < len(contours)):
+    if ((final_index < len(contours)) and (final_index > 0)):
         max_contour = contours[final_index]
-    else:
+    elif (len(contours) > 0):
         max_contour = contours[0]
+    else:
+        max_contour = [np.array([[1,1],[10,50],[50,50]], dtype=np.int32) , np.array([[99,99],[99,60],[60,99]], dtype=np.int32)][0];
     x,y,w,h = cv2.boundingRect(max_contour)
     print("Width", w, "Height", h)
     if not has_yellow:
