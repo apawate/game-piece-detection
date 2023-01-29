@@ -5,11 +5,15 @@ import calculations
 
 cap = cv2.VideoCapture(0)
 capture = True;
-focal = input("Camera focal length: ")
-focal = float(focal)
-objh_blue = input("Blue object height: ")
+focal = input("Camera focal length(type c to calibrate): ")
+if (focal == "c"):
+    focal = calculations.calibrate((6.0, 4.8))
+    print(focal)
+else:
+    focal = float(focal)
+objh_blue = input("Purple object height: ")
 objh_blue = float(objh_blue)
-objw_blue = input("Blue object width: ")
+objw_blue = input("Purple object width: ")
 objw_blue = float(objw_blue)
 objh_yellow = input("Yellow object height: ")
 objh_yellow = float(objh_yellow)
@@ -22,10 +26,10 @@ while(capture):
         _, frame = cap.read()
     # Converts images from BGR to HSV
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    lower_blue = np.array([110,50,50])
-    upper_blue = np.array([130,255,255])
-    lower_yellow = np.array([20, 100, 100])
-    upper_yellow = np.array([30, 255, 255])
+    lower_blue = np.array([130,50,50])
+    upper_blue = np.array([160,255,255])
+    lower_yellow = np.array([25, 100, 100])
+    upper_yellow = np.array([35, 255, 255])
 
     # Creates a mask showing all "blue" objects and one showing all "yellow" objects in the frame
     mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
